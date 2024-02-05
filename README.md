@@ -10,7 +10,7 @@
 
 **Fotografia:** ![Texto Alternativo](Drikz.jpg)
 
-- [] TPC1
+- [X] TPC1
 - [] TPC2
 - [] TPC3
 - [] TPC4
