@@ -1,7 +1,7 @@
 
-import json
 import os
 import re
+import xml.etree.ElementTree as ET
 
 os.mkdir("html")
 
@@ -29,44 +29,45 @@ curr = os.getcwd()
 
 ruas_dir = os.path.join(curr, 'MapaRuas-materialBase/texto')
 
-lista = []
-
-listaCorreta = []
-
 lista_ruas = os.listdir(ruas_dir)
 
-for rua in lista_ruas:
-    name = rua.split('-')
-    ruaName = name[-1].split(".")[0]
-    lista += [ruaName]
+# for rua in lista_ruas:
+#     name = rua.split('-')
+#     ruaName = name[-1].split(".")[0]
+#     lista += [ruaName]
 
-for i in lista:
-    res_list = [s for s in re.split("([A-Z][^A-Z]*)", i) if s]
-    listaCorreta.append(" ".join(res_list))
+# for i in lista:
+#     res_list = [s for s in re.split(r"([A-Z][^A-Z]*|[.])", i) if s]
+#     listaCorreta.append(" ".join(res_list))
+
+for ficheiro in os.listdir(ruas_dir):
     
+    filepath = os.path.join(ruas_dir, ficheiro)
     
+    tree = ET.parse(filepath)
+    root = tree.getroot()
 
+    meta = root.find('./meta')
+    nome = meta.find('./nome')
+    numero = meta.find('./número')
     
+    lista_ruas.append(nome.text)
     
-
+    ruaFile = open(f'html/{nome.text}.html', 'w', encoding="utf-8")
     
-html += "<ul>"
-
-for elem in sorted(listaCorreta):
-    html += f'<li><a href="html/{elem}.html">{elem}</a></li>'
+    html += "<ul>"
+    html += f'<li><a href="html/{nome.text}.html">{nome.text}</a></li>'
+    html += "</ul>"
+    with open('mapa.html', 'w', encoding="utf-8") as f:
+        f.write(html)
     
-html += "</ul>"
-
-with open('mapa.html', 'w', encoding="utf-8") as f:
-    f.write(html)
-
-
-#file_path = ruas_dir + '/MRB-01-RuaDoCampo.xml'
-
-#file = open(file_path, "r", encoding="utf-8").read()
-
-# load = json.loads(file)
-    
+    templateCidade = template
+    templateCidade += f"<h1>{nome.text}</h1>"
+    templateCidade += f"<h3>Número: {numero.text}</h3>"
+    templateCidade += "</body>"
+    ruaFile.write(templateCidade)
+    ruaFile.close()
+        
 # listaDeCidades = []
 # for i in listaCorreta:
 #     listaDeCidades.append(i)
