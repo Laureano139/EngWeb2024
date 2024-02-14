@@ -51,13 +51,6 @@ for ficheiro in os.listdir(ruas_dir):
         imagem_path = fig.find('./imagem').attrib.get('path')
         legenda = fig.find('./legenda').text
         figs.append((imagem_path, legenda))
-
-    paragrafo = corpo.find('./para')
-    lugar = corpo.find('./lugar')
-    entidade = corpo.find('./entidade')
-    data = corpo.find('./data')
-    
-    # \*
     
     lista_ruas.append(nome.text)
     
@@ -77,36 +70,37 @@ for ficheiro in os.listdir(ruas_dir):
         partes = imagem_path.split("../imagem/")
         imgFile = partes[1]
         templateCidade += f"<figure><br><img src='../MapaRuas-materialBase/imagem/{imgFile}'><br><figcaption>{legenda}</figcaption></figure>"
+        
+    for para in root.findall('./corpo/para'):
+        templateCidade += f'<p>{para.text}'
+            
+        for elem in para:
+            if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
+               templateCidade += f'<b>{elem.text}</b>{elem.tail}'
+        templateCidade += '</p>'
+    
+    for casa in root.findall('./corpo/lista-casas/casa'):
+        if casa.find('número') != None:
+            num_casa = casa.find('número').text
+            templateCidade += f'Número da casa: {num_casa}<br>'
+        else: pass
+        if casa.find('enfiteuta') != None:
+            enfiteuta = casa.find('enfiteuta')
+            templateCidade += f'Enfiteuta: {enfiteuta.text}<br>'
+        else: pass
+        if casa.find('foro') != None:
+            foro = casa.find('foro').text
+            templateCidade += f'Foro: {foro}<br>'
+        else: pass
+        
+    for descr in root.findall('./corpo/desc'):
+        for para in descr.find('para'):
+            templateCidade += f'Descrição: <p>{para.text}'
+            for elem in para:
+                if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
+                    templateCidade += f'<b>{elem.text}</b>{elem.tail}'
+            templateCidade += '</p>'
     
     templateCidade += "</body>"
     ruaFile.write(templateCidade)
     ruaFile.close()
-    
-    # \*
-    
-    # lista_casas = corpo.find('./lista-casas')
-    # casa = lista_casas.find('./casa')
-    # numCasa = casa.find('./número')
-    # enfiteuta = casa.find('./enfiteuta')
-    # foro = casa.find('./foro')
-    # desc = casa.find('./desc')
-    # paragrafoCasa = desc.find('./para')
-    # lugarCasa = desc.find('./lugar')
-    # entidadeCasa = desc.find('./entidade')
-    # dataCasa = desc.find('./data')
-        
-# listaDeCidades = []
-# for i in listaCorreta:
-#     listaDeCidades.append(i)
-#     ficheiroCidade = open(f"html/{i}.html", "w", encoding="utf-8")
-#     templateCidade = template
-#     templateCidade += f"<h1>{i}</h1>"
-#     templateCidade += f"<h2>{i['distrito']}</h2>"
-#     templateCidade += f"<b>População: </b>{i['população']}"
-#     templateCidade += "<br>"
-#     templateCidade += f"<b>Descrição: </b>{i['descrição']}"
-#     templateCidade += '<h6><a href="../mapa.html">Voltar</a></h6>'
-#     templateCidade += "</body>"
-    
-#     ficheiroCidade.write(templateCidade)
-#     ficheiroCidade.close()
