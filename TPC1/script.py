@@ -11,6 +11,7 @@ html = """
 <head>
     <title>TPC1</title>
     <meta charset="utf-8">
+    <b> TPC1::AfonsoAmorim::PL3 </b>
 </head>
 <body>
 """
@@ -98,7 +99,7 @@ for ficheiro in os.listdir(ruas_dir):
             templateCidade += f'Descrição: <p>{para.text}'
             for elem in para:
                 if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
-                    templateCidade += f'<b>{elem.text}</b>{elem.tail}'
+                    templateCidade += f'<b>{elem.text} {elem.tail}</b>'
             templateCidade += '</p>'
     
     templateCidade += "</body>"
