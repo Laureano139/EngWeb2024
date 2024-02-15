@@ -8,10 +8,13 @@ os.mkdir("html")
 html = """
 <!DOCTYPE html>
 <html lang="pt-PT">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <head>
     <title>TPC1</title>
     <meta charset="utf-8">
-    <b> TPC1::AfonsoAmorim::PL3 </b>
+    <div class="w3-container w3-teal w3-center">
+        <h1>Ruas de Braga</h1>
+    </div>
 </head>
 <body>
 """
@@ -19,6 +22,7 @@ html = """
 template = """
 <!DOCTYPE html>
 <html lang="pt-PT">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <head>
     <title>TPC1</title>
     <meta charset="utf-8">
@@ -105,3 +109,12 @@ for ficheiro in os.listdir(ruas_dir):
     templateCidade += "</body>"
     ruaFile.write(templateCidade)
     ruaFile.close()
+    f.close()
+    
+html += """ <footer class="w3-container w3-center w3-teal">
+                    <p>TPC1::AfonsoAmorim::A97569::PL3</p>
+                </footer>
+            """
+
+with open('mapa.html', 'w', encoding="utf-8") as f:
+        f.write(html)
