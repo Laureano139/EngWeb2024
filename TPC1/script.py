@@ -61,7 +61,7 @@ for ficheiro in os.listdir(ruas_dir):
     
     ruaFile = open(f'html/{nome.text}.html', 'w', encoding="utf-8")
     
-    html += "<ul>"
+    html += "<ul class='w3-ul w3-border w3-hoverable'>"
     html += f'<li><a href="html/{nome.text}.html">{nome.text}</a></li>'
     html += "</ul>"
     with open('mapa.html', 'w', encoding="utf-8") as f:
@@ -74,7 +74,17 @@ for ficheiro in os.listdir(ruas_dir):
     for imagem_path, legenda in figs:
         partes = imagem_path.split("../imagem/")
         imgFile = partes[1]
-        templateCidade += f"<figure><br><img src='../MapaRuas-materialBase/imagem/{imgFile}'><br><figcaption>{legenda}</figcaption></figure>"
+        templateCidade += f"""
+                        <div class="w3-third">
+                            <div class="w3-card">
+                                <img src='../MapaRuas-materialBase/imagem/{imgFile}' class="w3-hover-opacity" style="width:100%">
+                                <div class="w3-container">
+                                    <h5>{legenda}</h5>
+                                </div>
+                            </div>
+                        </div>
+        """
+        #templateCidade += f"<div class='w3-card-4'><br><img src='../MapaRuas-materialBase/imagem/{imgFile}'><br><div class='w3-container w3-center'><p>{legenda}</p></div></div>"
         
     for para in root.findall('./corpo/para'):
         templateCidade += f'<p>{para.text}'
