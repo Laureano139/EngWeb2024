@@ -1,6 +1,5 @@
 
 import os
-import re
 import xml.etree.ElementTree as ET
 
 os.mkdir("html")
@@ -34,7 +33,7 @@ curr = os.getcwd()
 
 ruas_dir = os.path.join(curr, 'MapaRuas-materialBase/texto')
 
-lista_ruas = os.listdir(ruas_dir)
+lista_ord = []
 
 for ficheiro in os.listdir(ruas_dir):
     
@@ -57,30 +56,31 @@ for ficheiro in os.listdir(ruas_dir):
         legenda = fig.find('./legenda').text
         figs.append((imagem_path, legenda))
     
-    lista_ruas.append(nome.text)
+    lista_ord.append(nome.text)
     
-    ruaFile = open(f'html/{nome.text}.html', 'w', encoding="utf-8")
+lista_ord.sort(key=str.strip)
     
+for nome_rua in lista_ord:
+
+    ruaFile = open(f'html/{nome_rua}.html', 'w', encoding="utf-8")
     html += "<ul class='w3-ul w3-border w3-hoverable'>"
-    html += f'<li><a href="html/{nome.text}.html">{nome.text}</a></li>'
+    html += f'<li><a href="html/{nome_rua}.html">{nome_rua}</a></li>'
     html += "</ul>"
     with open('mapa.html', 'w', encoding="utf-8") as f:
         f.write(html)
     
     templateCidade = template
-    templateCidade += f"<h1>{nome.text}</h1>"
+    templateCidade += f"<h1>{nome_rua}</h1>"
     templateCidade += f"<h3>Número: {numero.text}</h3>"
     
     for imagem_path, legenda in figs:
         partes = imagem_path.split("../imagem/")
         imgFile = partes[1]
         templateCidade += f"""
-                        <div class="w3-third">
-                            <div class="w3-card">
-                                <img src='../MapaRuas-materialBase/imagem/{imgFile}' class="w3-hover-opacity" style="width:100%">
-                                <div class="w3-container">
-                                    <h5>{legenda}</h5>
-                                </div>
+                        <div class="w3-third w3-card w3-padding-48">
+                            <img src='../MapaRuas-materialBase/imagem/{imgFile}' class="w3-hover-opacity" style="width:100%">
+                            <div class="w3-container">
+                                <h5>{legenda}</h5>
                             </div>
                         </div>
         """
@@ -124,7 +124,7 @@ for ficheiro in os.listdir(ruas_dir):
 html += """ <footer class="w3-container w3-center w3-teal">
                     <p>TPC1::AfonsoAmorim::A97569::PL3</p>
                 </footer>
-            """
+        """
 
 with open('mapa.html', 'w', encoding="utf-8") as f:
         f.write(html)
