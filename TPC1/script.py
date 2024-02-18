@@ -103,35 +103,35 @@ for nome_rua, numero in lista_ordenada:
                         </div>
         """
                 
-    for para in root.findall('./corpo/para'):
-        templateCidade += f'<p>{para.text}'
-            
-        for elem in para:
-            if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
-               templateCidade += f'<b>{elem.text}</b>{elem.tail}'
-        templateCidade += '</p>'
-    
-    for casa in root.findall('./corpo/lista-casas/casa'):
-        if casa.find('número') != None:
-            num_casa = casa.find('número').text
-            templateCidade += f'Número da casa: {num_casa}<br>'
-        else: pass
-        if casa.find('enfiteuta') != None:
-            enfiteuta = casa.find('enfiteuta')
-            templateCidade += f'Enfiteuta: {enfiteuta.text}<br>'
-        else: pass
-        if casa.find('foro') != None:
-            foro = casa.find('foro').text
-            templateCidade += f'Foro: {foro}<br>'
-        else: pass
-        
-    for descr in root.findall('./corpo/desc'):
-        for para in descr.find('para'):
-            templateCidade += f'Descrição: <p>{para.text}'
+        for para in root.findall('./corpo/para'):
+            templateCidade += f'<p>{para.text}'
+                
             for elem in para:
                 if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
-                    templateCidade += f'<b>{elem.text} {elem.tail}</b>'
+                   templateCidade += f'<b>{elem.text}</b>{elem.tail}'
             templateCidade += '</p>'
+        
+        for casa in root.findall('./corpo/lista-casas/casa'):
+            if casa.find('número') != None:
+                num_casa = casa.find('número').text
+                templateCidade += f'Número da casa: {num_casa}<br>'
+            else: pass
+            if casa.find('enfiteuta') != None:
+                enfiteuta = casa.find('enfiteuta')
+                templateCidade += f'Enfiteuta: {enfiteuta.text}<br>'
+            else: pass
+            if casa.find('foro') != None:
+                foro = casa.find('foro').text
+                templateCidade += f'Foro: {foro}<br>'
+            else: pass
+            
+        for descr in root.findall('./corpo/desc'):
+            for para in descr.find('para'):
+                templateCidade += f'Descrição: <p>{para.text}'
+                for elem in para:
+                    if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
+                        templateCidade += f'<b>{elem.text} {elem.tail}</b>'
+                templateCidade += '</p>'
     
     templateCidade += "</body>"
     ruaFile.write(templateCidade)
