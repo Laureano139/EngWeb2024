@@ -1,6 +1,7 @@
 
 import os
 import xml.etree.ElementTree as ET
+import re
 
 os.mkdir("html")
 
@@ -33,6 +34,8 @@ curr = os.getcwd()
 
 ruas_dir = os.path.join(curr, 'MapaRuas-materialBase/texto')
 
+img_atuais = os.path.join(curr, 'MapaRuas-materialBase/atual')
+
 lista_ord = []
 
 for ficheiro in os.listdir(ruas_dir):
@@ -56,11 +59,11 @@ for ficheiro in os.listdir(ruas_dir):
         legenda = fig.find('./legenda').text
         figs.append((imagem_path, legenda))
     
-    lista_ord.append(nome.text)
+    lista_ord.append((nome.text, numero.text))
+
+lista_ordenada = sorted(lista_ord, key=lambda x: x[0].strip())
     
-lista_ord.sort(key=str.strip)
-    
-for nome_rua in lista_ord:
+for nome_rua, numero in lista_ordenada:
 
     ruaFile = open(f'html/{nome_rua}.html', 'w', encoding="utf-8")
     html += "<ul class='w3-ul w3-border w3-hoverable'>"
@@ -71,21 +74,35 @@ for nome_rua in lista_ord:
     
     templateCidade = template
     templateCidade += f"<h1>{nome_rua}</h1>"
-    templateCidade += f"<h3>Número: {numero.text}</h3>"
+    templateCidade += f"<h3>Número: {numero}</h3>"
+    
+    for atual in os.listdir(img_atuais):
+        r_digits = r"\d+"
+        match = re.search(r_digits, atual)
+        if match and match.group() == numero:
+            templateCidade += f"""
+            
+            <div class="w3-third w3-card">
+                <img src='../MapaRuas-materialBase/atual/{atual}' class="w3-hover-opacity" style="width:100%">
+                <div class="w3-container">
+                    <h5>Vista atual da rua</h5>
+                </div>
+            </div>
+            
+            """
     
     for imagem_path, legenda in figs:
         partes = imagem_path.split("../imagem/")
         imgFile = partes[1]
         templateCidade += f"""
-                        <div class="w3-third w3-card w3-padding-48">
+                        <div class="w3-third w3-card">
                             <img src='../MapaRuas-materialBase/imagem/{imgFile}' class="w3-hover-opacity" style="width:100%">
                             <div class="w3-container">
                                 <h5>{legenda}</h5>
                             </div>
                         </div>
         """
-        #templateCidade += f"<div class='w3-card-4'><br><img src='../MapaRuas-materialBase/imagem/{imgFile}'><br><div class='w3-container w3-center'><p>{legenda}</p></div></div>"
-        
+                
     for para in root.findall('./corpo/para'):
         templateCidade += f'<p>{para.text}'
             
