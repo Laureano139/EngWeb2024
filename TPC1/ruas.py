@@ -117,7 +117,12 @@ for ficheiro in os.listdir(ruas_dir):
                 if elem.tag == 'lugar' or elem.tag == 'data' or elem.tag == 'entidade':
                     templateCidade += f'<b>{elem.text} {elem.tail}</b>'
             templateCidade += '</p>'
-        
+    
+    templateCidade += """
+                    <a href='../mapa.html'>
+                        <button class='w3-button w3-round-large w3-teal'>Voltar</button>
+                    </a>
+                        """
     templateCidade += "</body>"
     with open(f'html/{nome}.html', 'w', encoding="utf-8") as ruaHTML:
         ruaHTML.write(templateCidade)
@@ -125,7 +130,6 @@ for ficheiro in os.listdir(ruas_dir):
 #######################################################################################################################
         
 lista_ordenada = sorted(lista_ruas, key=lambda x: x[0])
-print(f"{lista_ruas}\n\n{lista_ordenada}")
 
 for rua in lista_ordenada:
     html += f'<li><a href="html/{rua}.html">{rua}</a></li>'
