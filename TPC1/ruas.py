@@ -28,6 +28,12 @@ template = """
     <meta charset="utf-8">
 </head>
 <body>
+<style>
+#containerVistaAtual {
+    flex-direction: row;
+    padding: 10px;
+}
+</style>
 """
 
 curr = os.getcwd()
@@ -61,7 +67,7 @@ for ficheiro in os.listdir(ruas_dir):
         if match and match.group() == numero:
             templateCidade += f"""
             
-            <div class="w3-third w3-card">
+            <div id="vistaAtual" class="w3-third w3-card">
                 <img src='../MapaRuas-materialBase/atual/{atual}' class="w3-hover-opacity" style="width:100%">
                 <div class="w3-container">
                     <h5>Vista atual da rua</h5>
@@ -80,7 +86,7 @@ for ficheiro in os.listdir(ruas_dir):
         partes = imagem_path.split("../imagem/")
         imgFile = partes[1]
         templateCidade += f"""
-            <div class="w3-third w3-card">
+            <div id="imagem" class="w3-third w3-card">
                 <img src='../MapaRuas-materialBase/imagem/{imgFile}' class="w3-hover-opacity" style="width:100%">
                 <div class="w3-container">
                     <h5>{legenda}</h5>
