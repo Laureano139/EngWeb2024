@@ -28,7 +28,7 @@ posHTML_HomePage = """
                 </ul>
             </div>
 
-            <footer class="w3-container w3-teal">
+            <footer class="w3-container w3-teal w3-center">
                 <h5>TPC2::EngWeb2024::A97569</h5>
             </footer>
 
@@ -58,10 +58,10 @@ preHTMLCidades = """
 
 posHTMLCidades = """
             </div>
-            <button class="w3-button w3-round-large">
+            <button class="w3-button w3-round-large w3-center w3-black">
                 <a href="/">Voltar à página principal</a>
             </button>
-            <footer class="w3-container w3-teal">
+            <footer class="w3-container w3-teal w3-center">
                 <h5>TPC2::EngWeb2024::A97569</h5>
             </footer>
         </div>
