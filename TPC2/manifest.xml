@@ -15,12 +15,17 @@
         </uc>
     </meta>
     <resumo>
-        <p> Primeiro parágrafo</p>
-        <p> Segundo parágrafo</p>
-        <p> Terceiro parágrafo com <url>link</url><texto>url embutido</texto></p>
+        Criar uma página para cada cidade: c1.html, c2.html, ...
+        Página principal:
+        Lista alfabética de cidades. Cada cidade é um link da forma
+        Serviço em Node:
+        '/' -> Página Principal
+        '/cX' -> Página da Cidade cX
+        Página da Cidade:
+        Nome, ID, Distrito, População, Ligações
     </resumo>
     <resultados>
-        <resultado>resultado 1</resultado>
-        <resultado>resultado 2</resultado>
+        <resultado>script.py</resultado>
+        <resultado>HTML Gerado - pasta "cities"</resultado>
     </resultados>
 </doc>
