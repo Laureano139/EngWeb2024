@@ -40,6 +40,7 @@ http.createServer(function (req, res) {
             res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
             res.write("<head><link rel='stylesheet' type='text/css' href='/w3.css'><title>"+ dados.data[0]['title'] +"</title></head>")
             res.write("<body>")
+            res.write("<div class='w3-container w3-teal w3-center'><h1> Página do filme </h1></div>")
             res.write("<div class='w3-padding-16'>")
             res.write("<h2><b> Nome do filme: </b></h2>" + "<h4>" + dados.data[0]['title'] + "</h4>")
             res.write("<h2><b> Ano do filme: </b></h2>" + "<h4>" + dados.data[0]['year'] + "</h4>")
@@ -56,7 +57,7 @@ http.createServer(function (req, res) {
             }
             else{
                 for(genre in dados.data[0]['genres']){
-                    res.write("<li><a href='/generos/'>" + dados.data[0]['genres'][genre] + "</a></li>")
+                    res.write("<li><a href='/generos/" + dados.data[0]['genres'][genre] +"'>" + dados.data[0]['genres'][genre] + "</a></li>")
                 }
             }
             res.write("</ul>")
@@ -105,12 +106,12 @@ http.createServer(function (req, res) {
         })
     }
 
-    else if(q.pathname.match(/\/atores\/\w+([\'\w]+)?/)){
+    else if(q.pathname.match(/\/atores\/\w+([\'|\`\w]+)?/)){
         let desig = q.pathname.substring(8)
         var nameFormat = desig.replace(/%20/g, " ")
         axios.get('http://localhost:3000/filmes')
         .then(dados => {
-            var filmes = dados.data.filter(filme => filme.cast.includes(nameFormat))
+            var filmes = dados.data.filter(filme => filme.cast && filme.cast.includes(nameFormat))
             res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
             res.write("<head><link rel='stylesheet' type='text/css' href='/w3.css'><title>"+ nameFormat +"</title></head>")
             res.write("<body>")
@@ -174,7 +175,8 @@ http.createServer(function (req, res) {
         var generoFormat = gen.replace(/%20/g, " ")
         axios.get('http://localhost:3000/filmes')
         .then(dados => {
-            var filmesCat = dados.data.filter(filmeCat => filmeCat.genres.includes(generoFormat))
+
+            var filmesCat = dados.data.filter(filmeCat => filmeCat.genres && filmeCat.genres.includes(generoFormat))
 
             res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
 
@@ -202,6 +204,7 @@ http.createServer(function (req, res) {
         })
         .catch(error => {
             res.write("Erro!")
+            console.error(error)
             res.end()
         })
     }
