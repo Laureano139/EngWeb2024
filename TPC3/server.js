@@ -9,7 +9,32 @@ http.createServer(function (req, res) {
 
     var q = url.parse(req.url, true)
 
-    if(q.pathname == '/filmes'){
+    if(q.pathname == '/'){
+        axios.get('http://localhost:3000/filmes?_sort=title')
+        .then(dados => {
+            res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
+            res.write("<head><link rel='stylesheet' type='text/css' href='./w3.css'></head>")
+            res.write("<body>")
+            res.write("<div class='w3-container w3-teal w3-center'>")
+            res.write("<h1> TPC3 </h1>")
+            res.write("</div>")
+            res.write("<ul class='w3-ul w3-hoverable'>")
+            res.write("<li><a href='/filmes'> Página de filmes </a></li>")
+            res.write("<li><a href='/atores'> Página de atores </a></li>")
+            res.write("<li><a href='/generos'> Página de géneros </a></li>")
+            res.write("</ul>")
+            res.write("</body>")
+            res.write("<footer class='w3-container w3-teal'>")
+            res.write("<h6> TPC3::EngWeb2024::A97569 </h6>")
+            res.write("</footer>")
+            res.end()
+        }).catch(erro => {
+            res.write("Erro!")
+            res.end()
+        })
+    }
+
+    else if(q.pathname == '/filmes'){
         axios.get('http://localhost:3000/filmes?_sort=title')
         .then(dados => {
             res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
@@ -30,6 +55,7 @@ http.createServer(function (req, res) {
             res.end()
         }).catch(erro => {
             res.write("Erro!")
+            res.end()
         })
     }
     
