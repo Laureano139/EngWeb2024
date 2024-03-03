@@ -106,7 +106,7 @@ http.createServer(function (req, res) {
         })
     }
 
-    else if(q.pathname.match(/\/atores\/\w+([\'|\`\w]+)?/)){
+    else if(q.pathname.match(/\/atores\/[\w\s(')?]+/)){
         let desig = q.pathname.substring(8)
         var nameFormat = desig.replace(/%20/g, " ")
         axios.get('http://localhost:3000/filmes')
@@ -115,7 +115,7 @@ http.createServer(function (req, res) {
             res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
             res.write("<head><link rel='stylesheet' type='text/css' href='/w3.css'><title>"+ nameFormat +"</title></head>")
             res.write("<body>")
-            res.write("<div class='w3-container w3-teal w3-center'> Página do Ator </div>")
+            res.write("<div class='w3-container w3-teal w3-center'><h1> Página do Ator </h1></div>")
             res.write("<h2><b> Nome: </b></h2>" + "<h4>" + nameFormat + "</h4>")
             res.write("<h2><b> Filmes onde participou: </b></h2>")
             res.write("<ul class='w3-ul w3-hoverable'>")
@@ -166,6 +166,7 @@ http.createServer(function (req, res) {
         })
         .catch(error => {
             res.write("Erro!")
+            console.error(error)
             res.end()
         })
     }
