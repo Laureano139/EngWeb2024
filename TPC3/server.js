@@ -132,6 +132,7 @@ http.createServer(function (req, res) {
         })
     }
 
+    // .*$
     else if(q.pathname.match(/\/atores\/[\w\s(')?]+/)){
         let desig = q.pathname.substring(8)
         var nameFormat = desig.replace(/%20/g, " ")
