@@ -87,31 +87,12 @@ var composersServer = http.createServer((req, res) => {
                 }
 
                 // GET /compositores/delete/:id --------------------------------------------------------------------
-                else if (/\/compositores\/delete\/(C)[0-9]+$/i.test(req.url)) {
+                else if (/\/compositores\/delete\/.*$/i.test(req.url)) {
                     var idCompositor = req.url.split("/")[3];
                     axios.delete('http://localhost:3000/compositores/' + idCompositor)
-                    .then(resp => {
-                    axios.get('http://localhost:3000/periodos')
-                    .then(resp => {
-                        var periodos = resp.data;
-                        for (let i = 0; i < periodos.length; i++) {
-                            var comps = periodos[i].compositores;
-                            for (let j = 0; j < comps.length; j++) {
-                                if (comps[j].id === idCompositor) {
-                                    var composerIndex = periodos[i].compositores.indexOf(comps[j]);
-                                    periodos[i].compositores.splice(composerIndex, 1);
-                                    axios.put('http://localhost:3000/periodos/' + periodos[i].id, periodos[i]);
-                                }
-                            }
-                        }
-                    })
                     .then(() => {
                         res.writeHead(302, {'Location': '/compositores'});
                         res.end();
-                    })
-                    .catch(erro => {
-                        console.error(erro)
-                    })
                     })
                     .catch(erro => {
                         console.error(erro);
@@ -133,9 +114,9 @@ var composersServer = http.createServer((req, res) => {
                 }
 
                 // GET /periodos/:id --------------------------------------------------------------------
-                else if(/\/periodos\/(P1|P2)$/i.test(req.url)){
+                else if(/\/periodos\/(P)\d+$/i.test(req.url)){
                     var idPeriodo = req.url.split("/")[2]
-                    axios.get('http://localhost:3000/compositores?periodo.id=' + idPeriodo)
+                    axios.get('http://localhost:3000/periodos?id=' + idPeriodo)
                     .then(resp => {
                         var compositores = resp.data
                         res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
@@ -153,7 +134,7 @@ var composersServer = http.createServer((req, res) => {
                 }
 
                 // GET /periodos/edit/:id --------------------------------------------------------------------
-                else if(/\/periodos\/edit\/(P1|P2)$/i.test(req.url)){
+                else if(/\/periodos\/edit\/(P)\d+$/i.test(req.url)){
                     var idPeriodo = req.url.split("/")[3]
 
                     axios.get("http://localhost:3000/periodos/" + idPeriodo)
@@ -253,7 +234,7 @@ var composersServer = http.createServer((req, res) => {
                 }
 
                 // POST /periodos/edit/:id --------------------------------------------------------------------
-                else if(/\/periodos\/edit\/(P1|P2)$/i.test(req.url)){
+                else if(/\/periodos\/edit\/.*$/i.test(req.url)){
                     collectRequestBodyData(req, result => {
                         if(result){
                             axios.put("http://localhost:3000/periodos/" + result.id, result)

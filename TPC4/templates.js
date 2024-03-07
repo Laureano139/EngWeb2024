@@ -304,6 +304,7 @@ exports.periodsListPage = function(plist, d){
                     <table class="w3-table-all">
                         <tr>
                             <th>Id</th><th>Nome</th>
+                            <th>Actions</th>
                         </tr>
                 `
     for(let i=0; i < plist.length ; i++){
@@ -314,6 +315,9 @@ exports.periodsListPage = function(plist, d){
                         <a href="/periodos/${plist[i].id}">
                             ${plist[i].nome}
                         </a>
+                    </td>
+                    <td>
+                        [<a href="/periodos/edit/${plist[i].id}">Edit</a>] [<a href="/periodos/delete/${plist[i].id}">Delete</a>]
                     </td>
                 </tr>
         `
@@ -394,11 +398,7 @@ exports.periodFormEditPage = function(p, d){
                     <label>Nome</label>
                     <input class="w3-input w3-round" type="text" name="nome" value='${p.nome}'/>
                 </fieldset>
-                    `
-
-    pagHTML += `
-                    <br/>
-                    <button class="w3-btn w3-teal w3-mb-2" type="Submit">Edit</button>
+                <button class="w3-btn w3-teal w3-mb-2" type="Submit">Edit</button>
                 </form>
 
                 <footer class="w3-container w3-teal">
