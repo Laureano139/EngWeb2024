@@ -37,7 +37,7 @@ var composersServer = http.createServer((req, res) => {
                     res.end(templates.homePage(d))
                 }
                 // GET /compositores --------------------------------------------------------------------
-                if(req.url == '/compositores'){
+                else if(req.url == '/compositores'){
                     axios.get("http://localhost:3000/compositores?_sort=nome")
                     .then(resp => {
                         var compositores = resp.data
@@ -75,8 +75,6 @@ var composersServer = http.createServer((req, res) => {
                 // GET /compositores/edit/:id --------------------------------------------------------------------
                 else if(/\/compositores\/edit\/(C)[0-9]+$/i.test(req.url)){
                     var idCompositor = req.url.split("/")[3]
-                    
-                    console.log("\n\n"+idCompositor)
 
                     axios.get("http://localhost:3000/compositores/" + idCompositor)
                     .then(resp => {
@@ -109,6 +107,7 @@ var composersServer = http.createServer((req, res) => {
                                     }
                                 }
                             }
+                            res.write('<p>Registo removido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
                         })
                         res.end()
                     })
@@ -222,7 +221,7 @@ var composersServer = http.createServer((req, res) => {
                 }
 
                 // POST /periodos/registo --------------------------------------------------------------------
-                if(req.url == '/periodos/registo'){
+                else if(req.url == '/periodos/registo'){
                     collectRequestBodyData(req, result => {
                         if(result){
                             axios.post("http://localhost:3000/periodos", result)
