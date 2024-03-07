@@ -1855,6 +1855,33 @@
       "dataNasc": "1560-01-01",
       "dataObito": "1620-01-01",
       "periodo": "Barroco"
+    },
+    {
+      "id": "C540",
+      "nome": "Teste",
+      "bio": "teste",
+      "dataNasc": "2000-01-01",
+      "dataObito": "2070-01-01",
+      "periodo": "Barroco"
+    },
+    {
+      "id": "C490",
+      "nome": "Teste2",
+      "bio": "sdsdsd",
+      "dataNasc": "2222-01-01",
+      "dataObito": "2333-01-01",
+      "periodo": "Barroco"
+    },
+    {
+      "id": "C700",
+      "nome": "Aaron",
+      "bio": "teste",
+      "periodo": {
+        "id": "P1",
+        "nome": "Barroco"
+      },
+      "dataNasc": "1999-09-09",
+      "dataObito": "2020-01-01"
     }
   ],
   "periodos": [

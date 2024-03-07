@@ -48,7 +48,7 @@ exports.composersListPage = function(clist, d){
             <div class="w3-card-4">
 
                 <header class="w3-container w3-teal">
-                    <h1>Composers List
+                    <h1>Lista de Compositores
                     <a class="w3-btn w3-round w3-grey" href="/compositores/registo">+</a>
                     </h1>
                     <a href="/">Home Page</a>
@@ -114,19 +114,19 @@ exports.composerFormPage = function(d){
                         <legend>Metadata</legend>
                         <label>id</label>
                         <input class="w3-input w3-round" type="text" name="id"/>
-                        <label>Name</label>
+                        <label>Nome</label>
                         <input class="w3-input w3-round" type="text" name="nome"/>
                         <label>Bio</label>
                         <input class="w3-input w3-round" type="textarea" name="bio"/>
-                        <label>Date of Birth</label>
+                        <label>Date de Nascimento</label>
                         <input class="w3-input w3-round" type="date" name="dataNasc"/>
-                        <label>Date of Death</label>
+                        <label>Date da Morte</label>
                         <input class="w3-input w3-round" type="date" name="dataObito"/>
-                        <label>Period</label>
+                        <label>Periodo</label>
                         <input class="w3-input w3-round" type="text" name="periodo"/>
                     </fieldset>
                     <br/>
-                    <button class="w3-btn w3-teal w3-mb-2" type="submit">Register</button>
+                    <button class="w3-btn w3-teal w3-mb-2" type="Submit">Register</button>
                 </form>
 
                 <footer class="w3-container w3-teal">
@@ -159,22 +159,22 @@ exports.composerFormEditPage = function(c, d){
                     <legend>Metadata</legend>
                     <label>id</label>
                     <input class="w3-input w3-round" type="text" name="id" readonly value='${c.id}'/>
-                    <label>Name</label>
+                    <label>Nome</label>
                     <input class="w3-input w3-round" type="text" name="nome" value='${c.nome}'/>
                     <label>Bio</label>
                     <input class="w3-input w3-round" type="textarea" name="bio" value='${c.bio}'/>
-                    <labal>Date of Birth</label>
+                    <labal>Data de Nascimento</label>
                     <input class="w3-input w3-round" type="date" name="dataNasc" value='${c.dataNasc}'/>
-                    <label>Date of Death</label>
+                    <label>Date da Morte</label>
                     <input class="w3-input w3-round" type="date" name="dataObito" value='${c.dataObito}'/>
-                    <label>Period</label>
+                    <label>Periodo</label>
                     <input class="w3-input w3-round" type="text" name="periodo" value='${c.periodo.nome}'/>
                 </fieldset>
                     `
 
     pagHTML += `
                     <br/>
-                    <button class="w3-btn w3-teal w3-mb-2" type="submit">Edit</button>
+                    <button class="w3-btn w3-teal w3-mb-2" type="Submit">Edit</button>
                 </form>
 
                 <footer class="w3-container w3-teal">
@@ -182,6 +182,64 @@ exports.composerFormEditPage = function(c, d){
                 </footer>
             
             </div>
+    `
+    return pagHTML
+}
+
+exports.compositoresPorPeriodoListPage = function(clist, d){
+    var pagHTML = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8"/>
+            <link rel="icon" href="favicon.png"/>
+            <link rel="stylesheet" href="w3.css"/>
+            <title>Gestão de compositores por período</title>
+        </head>
+        <body>
+            <div class="w3-card-4">
+
+                <header class="w3-container w3-teal">
+                    <h1>Lista de compositores do período
+                    <a class="w3-btn w3-round w3-grey" href="/compositores/registo">+</a>
+                    </h1>
+                    <a href="/">Home Page</a>
+                    
+                </header>
+        
+                <div class="w3-container">
+                    <table class="w3-table-all">
+                        <tr>
+                            <th>Id</th><th>Nome</th><th>Periodo</th>
+                            <th>Actions</th>
+                        </tr>
+                `
+    for(let i=0; i < clist.length ; i++){
+        pagHTML += `
+                <tr>
+                    <td>${clist[i].id}</td>
+                    <td>
+                        <a href="/compositores/${clist[i].id}">
+                            ${clist[i].nome}
+                        </a>
+                    </td>
+                    <td><a href="periodos/${clist[i].periodo.id}">${clist[i].periodo.nome}</a></td>
+                    <td>
+                        [<a href="/compositores/edit/${clist[i].id}">Edit</a>] [<a href="/compositores/delete/${clist[i].id}">Delete</a>]
+                    </td>
+                </tr>
+        `
+    }
+
+    pagHTML += `
+            </table>
+            </div>
+                <footer class="w3-container w3-teal">
+                    <h5>Generated by A97569::EngWeb2024 in ${d}</h5>
+                </footer>
+            </div>
+        </body>
+    </html>
     `
     return pagHTML
 }
@@ -237,8 +295,10 @@ exports.periodsListPage = function(plist, d){
         <body>
             <div class="w3-card-4">
                 <header class="w3-container w3-teal">
-                    <h1>Lista de Períodos</h1>
-                    <a href="/">Home Page</a>
+                <h1>Lista de Períodos
+                <a class="w3-btn w3-round w3-grey" href="/periodos/registo">+</a>
+                </h1>
+                <a href="/">Home Page</a>
                 </header>
                 <div class="w3-container">
                     <table class="w3-table-all">
@@ -268,6 +328,84 @@ exports.periodsListPage = function(plist, d){
             </div>
         </body>
     </html>
+    `
+    return pagHTML
+}
+
+exports.periodFormPage = function(d){
+    return `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8"/>
+            <link rel="icon" href="favicon.png"/>
+            <link rel="stylesheet" href="w3.css"/>
+            <title>Period Form</title>
+        </head>
+        <body>
+            <div class="w3-card-4">
+                <header class="w3-container w3-teal">
+                    <h2>Period Form</h2>
+                    <a href="javascript:history.back()">Voltar</a>
+                </header>
+            
+                <form class="w3-container" method="POST">
+                    <fieldset>
+                        <legend>Metadata</legend>
+                        <label>id</label>
+                        <input class="w3-input w3-round" type="text" name="id"/>
+                        <label>Nome</label>
+                        <input class="w3-input w3-round" type="text" name="nome"/>
+                    </fieldset>
+                    <br/>
+                    <button class="w3-btn w3-teal w3-mb-2" type="submit">Register</button>
+                </form>
+
+                <footer class="w3-container w3-teal">
+                    <h5>Generated by A97569::EngWeb2024 in ${d}</h5>
+                </footer>
+            
+            </div>
+    `
+}
+
+exports.periodFormEditPage = function(p, d){
+    var pagHTML = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8"/>
+            <link rel="icon" href="favicon.png"/>
+            <link rel="stylesheet" href="w3.css"/>
+            <title>Period Form</title>
+        </head>
+        <body>
+            <div class="w3-card-4">
+                <header class="w3-container w3-teal">
+                    <h2>Period Form</h2>
+                    <a href="javascript:history.back()">Voltar</a>
+                </header>
+            
+                <form class="w3-container" method="POST">
+                <fieldset>
+                    <legend>Metadata</legend>
+                    <label>id</label>
+                    <input class="w3-input w3-round" type="text" name="id" readonly value='${p.id}'/>
+                    <label>Nome</label>
+                    <input class="w3-input w3-round" type="text" name="nome" value='${p.nome}'/>
+                </fieldset>
+                    `
+
+    pagHTML += `
+                    <br/>
+                    <button class="w3-btn w3-teal w3-mb-2" type="Submit">Edit</button>
+                </form>
+
+                <footer class="w3-container w3-teal">
+                    <h5>Generated by A97569::EngWeb2024 in ${d}</h5>
+                </footer>
+            
+            </div>
     `
     return pagHTML
 }
