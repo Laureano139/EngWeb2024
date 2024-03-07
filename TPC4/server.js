@@ -165,7 +165,6 @@ var composersServer = http.createServer((req, res) => {
                     .then(resp => {
                         var periodo = resp.data
                         res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                        //res.write(templates.periodFormEditPage(periodo, d))
                         res.end(templates.periodFormEditPage(periodo, d))
                     })
                     .catch(erro => {
@@ -175,31 +174,26 @@ var composersServer = http.createServer((req, res) => {
                 
                 // GET ? -> Lancar um erro
                 else{
-                    //res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                    // res.write('<p> Método GET não suportado: ' + req.url)
-                    // res.write('</p><p><a href="/">Return</a></p>')
-                    //res.end()
                     console.log("Método GET não suportado: " + req.url)
                 }
                 break
             case "POST":
+
                 // POST /compositores/registo --------------------------------------------------------------------
                 if(req.url == '/compositores/registo'){
                     collectRequestBodyData(req, result => {
                         if(result){
-                            var idPer = ""
-                            if(result.periodo == 'Barroco'){
-                                idPer = "P1"
-                            } else if(result.periodo == 'Renascimento'){
-                                idPer = "P2"
-                            }
-                            else {
-                                console.log("Período inválido\n")
-                            }
-                            axios.post("http://localhost:3000/compositores", {id: result.id, nome: result.nome, bio: result.bio, dataNasc: result.dataNasc, dataObito: result.dataObito, periodo: {id: idPer, nome: result.periodo}})
+                            axios.get("http://localhost:3000/periodos?nome=" + result.periodo)
                             .then(resp => {
-                                res.writeHead(201, {'Content-Type' : 'text/html; charset=utf-8'})
-                                res.end('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
+                                var idPeriodo = resp.data[0].id
+                                axios.post("http://localhost:3000/compositores", {id: result.id, nome: result.nome, bio: result.bio, dataNasc: result.dataNasc, dataObito: result.dataObito, periodo: {id: idPeriodo, nome: result.periodo}})
+                                .then(resp => {
+                                    res.writeHead(201, {'Content-Type' : 'text/html; charset=utf-8'})
+                                    res.end('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
+                                })
+                                .catch(erro => {
+                                    console.error(erro)
+                                })
                             })
                             .catch(erro => {
                                 console.error(erro)
@@ -215,22 +209,17 @@ var composersServer = http.createServer((req, res) => {
                 else if (/\/compositores\/edit\/(C)[0-9]+$/i.test(req.url)) {
                     collectRequestBodyData(req, result => {
                         if (result) {
-                            var idPer = "";
-                            if (result.periodo == 'Barroco') {
-                                idPer = "P1";
-                            } else if (result.periodo == 'Renascimento') {
-                                idPer = "P2";
-                            } else {
-                                console.log("Período inválido\n");
-                            }
-                            axios.put("http://localhost:3000/compositores/" + result.id, {
-                                id: result.id,
-                                nome: result.nome,
-                                bio: result.bio,
-                                dataNasc: result.dataNasc,
-                                dataObito: result.dataObito,
-                                periodo: { id: idPer, nome: result.periodo }
-                            })
+                            axios.get("http://localhost:3000/periodos?nome=" + result.periodo)
+                            .then(resp => {
+                                var idPeriodo = resp.data[0].id
+                                axios.put("http://localhost:3000/compositores/" + result.id, {
+                                    id: result.id,
+                                    nome: result.nome,
+                                    bio: result.bio,
+                                    dataNasc: result.dataNasc,
+                                    dataObito: result.dataObito,
+                                    periodo: { id: idPeriodo, nome: result.periodo }
+                                })
                                 .then(resp => {
                                     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
                                     res.end('<p>Registo editado: ' + JSON.stringify(resp.data) + '</p>\n' + '<p><a href="/compositores">Página Compositores</a></p>')
@@ -238,6 +227,10 @@ var composersServer = http.createServer((req, res) => {
                                 .catch(erro => {
                                     console.error(erro)
                                 })
+                            })
+                            .catch(erro => {
+                                console.error(erro)
+                            })
                         } else {
                             console.log("Erro no método POST: edit\n")
                         }
@@ -252,8 +245,6 @@ var composersServer = http.createServer((req, res) => {
                             axios.post("http://localhost:3000/periodos", result)
                             .then(resp => {
                                 res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                                // res.write('<p>Periodo inserido: '+ JSON.stringify(resp.data) + '</p>')
-                                // res.write('<p><a href="/periodos">Página Períodos</a></p>')
                                 res.end('<p>Período inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/periodos">Página Períodos</a></p>')
                             })
                             .catch(erro => {
@@ -273,8 +264,6 @@ var composersServer = http.createServer((req, res) => {
                             axios.put("http://localhost:3000/periodos/" + result.id, result)
                             .then(resp => {
                                 res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                                // res.write('<p>Período inserido: '+ JSON.stringify(resp.data) + '</p>')
-                                // res.write('<p><a href="/periodos">Página Períodos</a></p>')
                                 res.end('<p>Período inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/periodos">Página Períodos</a></p>')
                             })
                             .catch(erro => {
