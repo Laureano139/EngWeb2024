@@ -19,7 +19,7 @@ def parseComps(compositores, periodos):
     return compositores
 
 def main():
-    with open('compositores.json', 'r', encoding='utf-8') as file:
+    with open('compositoresValidos.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
         regex = r"(C)\d+"
 
@@ -41,7 +41,7 @@ def main():
             'periodos': periodos
         }
 
-        with open('compositores2.json', 'w', encoding='utf-8') as file:
+        with open('compositoresFinal.json', 'w', encoding='utf-8') as file:
             json.dump(newData, file, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':

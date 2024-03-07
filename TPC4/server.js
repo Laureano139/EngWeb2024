@@ -68,7 +68,6 @@ var composersServer = http.createServer((req, res) => {
                 // GET /compositores/registo --------------------------------------------------------------------
                 else if(req.url == '/compositores/registo'){
                     res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                    //res.write(templates.composerFormPage(d))
                     res.end(templates.composerFormPage(d))
                 }
                
@@ -80,7 +79,6 @@ var composersServer = http.createServer((req, res) => {
                     .then(resp => {
                         var compositor = resp.data
                         res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                        //res.write(templates.composerFormEditPage(compositor, d))
                         res.end(templates.composerFormEditPage(compositor, d))
                     })
                     .catch(erro => {
@@ -127,7 +125,6 @@ var composersServer = http.createServer((req, res) => {
                     .then(resp => {
                         var periodos = resp.data
                         res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'})
-                        //res.write(templates.periodsListPage(periodos, d))
                         res.end(templates.periodsListPage(periodos, d))
                     })
                     .catch(erro => {
@@ -142,7 +139,6 @@ var composersServer = http.createServer((req, res) => {
                     .then(resp => {
                         var compositores = resp.data
                         res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                        //res.write(templates.compositoresPorPeriodoListPage(compositores, d))
                         res.end(templates.compositoresPorPeriodoListPage(compositores, d))
                     })
                     .catch(erro => {
@@ -153,7 +149,6 @@ var composersServer = http.createServer((req, res) => {
                 // GET /periodos/registo --------------------------------------------------------------------
                 else if(req.url == '/periodos/registo'){
                     res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                    //res.write(templates.periodFormPage(d))
                     res.end(templates.periodFormPage(d))
                 }
 
