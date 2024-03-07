@@ -87,34 +87,39 @@ var composersServer = http.createServer((req, res) => {
                         console.error(erro)
                     })
                 }
-               
+
                 // GET /compositores/delete/:id --------------------------------------------------------------------
-                else if(/\/compositores\/delete\/(C)[0-9]+$/i.test(req.url)){
-                    var idCompositor = req.url.split("/")[3]
+                else if (/\/compositores\/delete\/(C)[0-9]+$/i.test(req.url)) {
+                    var idCompositor = req.url.split("/")[3];
                     axios.delete('http://localhost:3000/compositores/' + idCompositor)
                     .then(resp => {
-                        res.writeHead(200, {'Location': '/compositores'})
-                        axios.get('http://localhost:3000/periodos')
-                        .then(resp => {
-                            var periodos = resp.data
-                            for (let i = 0; i < periodos.length; i++) {
-                                var comps = periodos[i].compositores
-                                for (let j = 0; j < comps.length; j++) {
-                                    if (comps[j].id === idCompositor) {
-                                        var composerIndex = periodos[i].compositores.indexOf(comps[j])
-                                        periodos[i].compositores.splice(composerIndex, 1)
-                                        axios.put('http://localhost:3000/periodos/' + periodos[i].id, periodos[i])
-                                    }
+                    axios.get('http://localhost:3000/periodos')
+                    .then(resp => {
+                        var periodos = resp.data;
+                        for (let i = 0; i < periodos.length; i++) {
+                            var comps = periodos[i].compositores;
+                            for (let j = 0; j < comps.length; j++) {
+                                if (comps[j].id === idCompositor) {
+                                    var composerIndex = periodos[i].compositores.indexOf(comps[j]);
+                                    periodos[i].compositores.splice(composerIndex, 1);
+                                    axios.put('http://localhost:3000/periodos/' + periodos[i].id, periodos[i]);
                                 }
                             }
-                            res.write('<p>Registo removido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
-                        })
-                        res.end()
+                        }
+                    })
+                    .then(() => {
+                        res.writeHead(302, {'Location': '/compositores'});
+                        res.end();
                     })
                     .catch(erro => {
                         console.error(erro)
                     })
+                    })
+                    .catch(erro => {
+                        console.error(erro);
+                    })
                 }
+
 
                 // GET /periodos --------------------------------------------------------------------
                 else if(req.url == '/periodos'){
@@ -182,11 +187,18 @@ var composersServer = http.createServer((req, res) => {
                 if(req.url == '/compositores/registo'){
                     collectRequestBodyData(req, result => {
                         if(result){
-                            axios.post("http://localhost:3000/compositores", result)
+                            var idPer = ""
+                            if(result.periodo == 'Barroco'){
+                                idPer = "P1"
+                            } else if(result.periodo == 'Renascimento'){
+                                idPer = "P2"
+                            }
+                            else {
+                                console.log("Período inválido\n")
+                            }
+                            axios.post("http://localhost:3000/compositores", {id: result.id, nome: result.nome, bio: result.bio, dataNasc: result.dataNasc, dataObito: result.dataObito, periodo: {id: idPer, nome: result.periodo}})
                             .then(resp => {
                                 res.writeHead(201, {'Content-Type' : 'text/html; charset=utf-8'})
-                                // res.write('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>')
-                                // res.write('<p><a href="/compositores">Página Compositores</a></p>')
                                 res.end('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
                             })
                             .catch(erro => {
@@ -200,25 +212,38 @@ var composersServer = http.createServer((req, res) => {
                 }
                 
                 // POST /compositores/edit/:id --------------------------------------------------------------------
-                else if(/\/compositores\/edit\/(C)[0-9]+$/i.test(req.url)){
+                else if (/\/compositores\/edit\/(C)[0-9]+$/i.test(req.url)) {
                     collectRequestBodyData(req, result => {
-                        if(result){
-                            axios.put("http://localhost:3000/compositores/" + result.id, result)
-                            .then(resp => {
-                                res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                                // res.write('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>')
-                                // res.write('<p><a href="/compositores">Página Compositores</a></p>')
-                                res.end('<p>Registo inserido: '+ JSON.stringify(resp.data) + '</p>' + '\n' + '<p><a href="/compositores">Página Compositores</a></p>')
+                        if (result) {
+                            var idPer = "";
+                            if (result.periodo == 'Barroco') {
+                                idPer = "P1";
+                            } else if (result.periodo == 'Renascimento') {
+                                idPer = "P2";
+                            } else {
+                                console.log("Período inválido\n");
+                            }
+                            axios.put("http://localhost:3000/compositores/" + result.id, {
+                                id: result.id,
+                                nome: result.nome,
+                                bio: result.bio,
+                                dataNasc: result.dataNasc,
+                                dataObito: result.dataObito,
+                                periodo: { id: idPer, nome: result.periodo }
                             })
-                            .catch(erro => {
-                                console.error(erro)
-                            })
-                        }
-                        else{
+                                .then(resp => {
+                                    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+                                    res.end('<p>Registo editado: ' + JSON.stringify(resp.data) + '</p>\n' + '<p><a href="/compositores">Página Compositores</a></p>')
+                                })
+                                .catch(erro => {
+                                    console.error(erro)
+                                })
+                        } else {
                             console.log("Erro no método POST: edit\n")
                         }
                     })
                 }
+
 
                 // POST /periodos/registo --------------------------------------------------------------------
                 else if(req.url == '/periodos/registo'){
