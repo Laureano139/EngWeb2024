@@ -186,7 +186,7 @@ exports.composerFormEditPage = function(c, d){
     return pagHTML
 }
 
-exports.compositoresPorPeriodoListPage = function(clist, d){
+exports.compositoresPorPeriodoListPage = function(clist, pInfo,d){
     var pagHTML = `
     <!DOCTYPE html>
     <html>
@@ -223,7 +223,7 @@ exports.compositoresPorPeriodoListPage = function(clist, d){
                             ${clist[i].nome}
                         </a>
                     </td>
-                    <td><a href="periodos/${clist[i].periodo.id}">${clist[i].periodo.nome}</a></td>
+                    <td>${pInfo.nome}</td>
                     <td>
                         [<a href="/compositores/edit/${clist[i].id}">Edit</a>] [<a href="/compositores/delete/${clist[i].id}">Delete</a>]
                     </td>

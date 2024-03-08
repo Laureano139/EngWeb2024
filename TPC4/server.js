@@ -118,9 +118,10 @@ var composersServer = http.createServer((req, res) => {
                     var idPeriodo = req.url.split("/")[2]
                     axios.get('http://localhost:3000/periodos?id=' + idPeriodo)
                     .then(resp => {
-                        var compositores = resp.data
+                        var compositores = resp.data[0].compositores
+                        var periodoInfo = resp.data[0]
                         res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'})
-                        res.end(templates.compositoresPorPeriodoListPage(compositores, d))
+                        res.end(templates.compositoresPorPeriodoListPage(compositores, periodoInfo,d))
                     })
                     .catch(erro => {
                         console.error(erro)
