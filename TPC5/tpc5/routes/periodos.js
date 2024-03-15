@@ -51,7 +51,7 @@ router.get('/edit/:idPeriodo', function(req, res, next) {
   axios.get("http://localhost:3000/periodos/" + req.params.idPeriodo)
   .then(resp => {
       var periodo = resp.data
-      res.status(200).render("periodoFormEditPage", {"p" : periodo, "data" : d})
+      res.status(200).render("periodFormEditPage", {"p" : periodo, "data" : d})
   })
   .catch(erro => {
       res.status(503).render("error", {"error" : erro})
@@ -100,7 +100,12 @@ router.get('/:idPeriodo', function(req, res, next) {
   .then(resp => {
     var compositores = resp.data.compositores
     var periodoInfo = resp.data
-    res.status(200).render("composersPorPeriodo", {"compositores" : compositores, "pInfo" : periodoInfo,"data" : d})
+    if(!compositores){
+      res.status(200).render("emptyComposerList", {"data" : d})
+    }
+    else {
+      res.status(200).render("composersPorPeriodo", {"compositores" : compositores, "pInfo" : periodoInfo,"data" : d})
+    }
   })
   .catch(erro => {
       res.status(506).render("error", {"error" : erro})
