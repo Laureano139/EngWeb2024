@@ -1847,6 +1847,17 @@
         "id": "P1",
         "nome": "Barroco"
       }
+    },
+    {
+      "id": "C1000",
+      "nome": "Aaron",
+      "bio": "",
+      "dataNasc": "",
+      "dataObito": "",
+      "periodo": {
+        "id": "P3",
+        "nome": "Gótico"
+      }
     }
   ],
   "periodos": [

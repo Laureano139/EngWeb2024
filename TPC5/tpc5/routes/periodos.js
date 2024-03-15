@@ -33,7 +33,8 @@ router.post('/registo', function(req, res, next) {
 
   axios.post("http://localhost:3000/periodos", result)
   .then(resp => {
-      res.status(201).redirect('/')
+    //axios put 
+    res.status(201).redirect('/')
   })
   .catch(erro => {
     res.status(502).render("error", {"error" : erro})
