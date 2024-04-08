@@ -1,5 +1,4 @@
-{
-  "pessoas": [
+[
     {
       "nome": "Diogo Alexandre Fadigas",
       "idade": 36,
@@ -101205,5 +101204,4 @@
         "comida_favorita": "tailandesa"
       }
     }
-  ]
-}
+]

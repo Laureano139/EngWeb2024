@@ -1,5 +1,4 @@
-{
-  "pessoas": [
+[
     {
       "nome": "Maiara Leonor Cabarrão",
       "idade": 24,
@@ -101254,5 +101253,4 @@
         "comida_favorita": "vegetariana"
       }
     }
-  ]
-}
+]
