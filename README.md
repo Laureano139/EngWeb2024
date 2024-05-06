@@ -11,12 +11,11 @@
 **Fotografia:** ![Texto Alternativo](Drikz.jpg)
 
 - [X] TPC1
-- [ ] TPC2
-- [ ] TPC3
-- [ ] TPC4
-- [ ] TPC5
-- [ ] TPC6
+- [X] TPC2
+- [X] TPC3
+- [X] TPC4
+- [X] TPC5
+- [X] TPC6
 - [ ] TPC7
 - [ ] TPC8
   
-[ ]: # (Adicionar "X" dentro dos "[]")
