@@ -1,0 +1,28 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.content {
+	position:relative;
+	top: 20px;
+}
+
+.w3-third {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.descricao-box {
+  width: 80%;
+  margin: 0 auto; /* Centrar a box na página */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
